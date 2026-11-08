@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vocabulary Test – Units 1–3</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#1d2433;--mute:#5d6678;--line:#d9dfeb;--acc:#1f5fbf;--ok:#1b7f4b;--okbg:#e3f5ea;--bad:#b3261e;--badbg:#fdeaea}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--card:#1b212d;--ink:#e8ecf4;--mute:#9aa4b8;--line:#2e3647;--acc:#6aa3ff;--ok:#5fd39a;--okbg:#17332a;--bad:#ff8a80;--badbg:#3a1d1d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+h1{font-size:1.15rem;margin:0}
+#timer{font-weight:700;font-size:1.2rem;color:var(--acc);font-variant-numeric:tabular-nums}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:16px 0}
+h2{font-size:1.05rem;margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 12px;font-size:.92rem}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row label.t{flex:1 1 240px}
+input[type=text],select{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-width:0}
+input[type=text].wide{width:100%}
+.bank{background:var(--bg);border:1px dashed var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;font-weight:600}
+.q{padding:10px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q p{margin:0 0 6px;font-weight:600}
+.opt{display:block;padding:4px 0}
+.ok{background:var(--okbg)}.bad{background:var(--badbg)}
+.fb{font-size:.9rem;margin-top:4px;color:var(--bad)}
+.fb b{color:var(--ok)}
+button{font:inherit;font-weight:600;padding:11px 22px;border:0;border-radius:8px;background:var(--acc);color:#fff;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+#result{display:none;font-size:1.1rem}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.info{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Vocabulary Test – Units 1–3</h1><div id="timer">30:00</div></header>
+
+<section>
+<p class="sub">Get Ready for IELTS Reading · Friendship – Body and Mind – Studying Abroad · 12 điểm · 30 phút</p>
+<div class="info">
+<input type="text" id="name" placeholder="Họ và tên" aria-label="Họ và tên">
+<input type="text" id="cls" placeholder="Lớp" aria-label="Lớp">
+</div>
+</section>
+
+<form id="quiz" onsubmit="return false">
+<section><h2>Part 1. Matching (3 điểm)</h2><p class="sub">Chọn nghĩa tiếng Việt đúng cho mỗi từ.</p><div id="p1"></div></section>
+<section><h2>Part 2. Fill in the blanks (4 điểm)</h2><p class="sub">Mỗi từ chỉ dùng một lần.</p>
+<div class="bank">hang out – socialize – picnic – teammate – compete – confident – apply for – accommodation – assignment – submit</div><div id="p2"></div></section>
+<section><h2>Part 3. Multiple choice (3 điểm)</h2><p class="sub">Chọn đáp án đúng A, B, C hoặc D.</p><div id="p3"></div></section>
+<section><h2>Part 4. Sentence transformation (2 điểm)</h2><p class="sub">Viết lại câu bằng cấu trúc so sánh với danh từ trong ngoặc, giữ nguyên nghĩa. Chỉ viết phần còn thiếu.</p><div id="p4"></div></section>
+<button id="submit" type="button">Nộp bài</button>
+</form>
+
+<section id="result" aria-live="polite"></section>
+</main>
+
+<script>
+const M=["A. Học bổng","B. Nhớ nhà","C. Đối thủ","D. Học phí","E. Giữ liên lạc","F. Hạn chót","G. Khu cắm trại","H. Hồi phục","I. Sức bền","J. Kiệt sức"];
+const P1=[["Keep in touch","E"],["Campsite","G"],["Stamina","I"],["Opponent","C"],["Exhausted","J"],["Recover","H"],["Scholarship","A"],["Tuition fees","D"],["Deadline","F"],["Homesick","B"]];
+
+const P2=[
+["I usually ___ with my friends at the weekend.","hang out"],
+["Young people can ___ with others by joining clubs.","socialize"],
+["We had a ___ in the park last Sunday.","picnic"],
+["My ___ helped me prepare for the football match.","teammate"],
+["Many athletes ___ in international competitions.","compete"],
+["She feels more ___ when speaking English.","confident"],
+["I want to ___ a scholarship to study abroad.","apply for"],
+["International students need to find suitable ___ before arriving.","accommodation"],
+["Students have to complete an important ___ this week.","assignment"],
+["You must ___ your homework before Friday.","submit"]];
+
+const P3=[
+["Which phrase means “dành thời gian với bạn bè”?",["Keep in touch","Spend time with friends","Apply for friends","Take part friends"],1],
+["Which word refers to a person who plays on the same team as you?",["Opponent","Competitor","Teammate","Coach"],2],
+["If someone feels sad because they are far away from home, they are ____.",["confident","exhausted","homesick","disappointed"],2],
+["What do students usually pay to attend a university?",["Scholarship","Tuition fees","Assignment","Deadline"],1],
+["Which word means “tham dự”?",["Attend","Submit","Recover","Compete"],0],
+["A university ____ is the area where its buildings and facilities are located.",["campsite","campus","competition","accommodation"],1],
+["Which word means “sự thất vọng”?",["Strength","Stamina","Disappointment","Competition"],2],
+["Students who want to study at a university usually need to send an ____.",["application","opponent","injury","lecture"],0],
+["Which activity involves walking long distances in the countryside or mountains?",["Partying","Chatting","Hiking","Shopping"],2],
+["If you finish an activity successfully before the final date, you meet the ____.",["teammate","deadline","campsite","degree"],1]];
+
+const P4=[
+["My new school has 30 classrooms. My old school has 20 classrooms. (more … than)","My new school has","more classrooms than my old school",/^more classrooms than (my )?old school$/],
+["Sarah has 5 close friends. Emily also has 5 close friends. (as many … as)","Sarah has","as many close friends as Emily (does)",/^as many close friends as emily( does| has)?$/],
+["Tom has 3 assignments this week. Peter has 6 assignments. (fewer … than)","Tom has","fewer assignments than Peter (this week)",/^fewer assignments than peter( has)?( this week)?$/],
+["This university offers 20 scholarships. That university offers 10 scholarships. (twice as many … as)","This university offers","twice as many scholarships as that university",/^twice as many scholarships as (that|the other) university( does| offers)?$/],
+["Jack spends 2 hours studying every day. His brother spends 4 hours studying every day. (half as much … as)","Jack spends","half as much time studying as his brother (every day)",/^half as much time (studying|on studying|for studying|to study) as his brother( does| spends)?( every day| a day| each day)?$/]];
+
+const $=id=>document.getElementById(id);
+const norm=s=>s.toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim();
+
+$("p1").innerHTML=P1.map((r,i)=>`<div class="row" id="r1-${i}"><label class="t" for="a1-${i}"><b>${i+1}.</b> ${r[0]}</label>
+<select id="a1-${i}"><option value="">–</option>${M.map(m=>`<option value="${m[0]}">${m}</option>`).join("")}</select><span class="fb"></span></div>`).join("");
+
+$("p2").innerHTML=P2.map((r,i)=>`<div class="row" id="r2-${i}"><label class="t" for="a2-${i}"><b>${i+1}.</b> ${r[0].replace("___","<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>")}</label>
+<input type="text" id="a2-${i}" autocomplete="off" autocapitalize="off" spellcheck="false" size="14"><span class="fb"></span></div>`).join("");
+
+$("p3").innerHTML=P3.map((r,i)=>`<div class="q" id="r3-${i}"><p>${i+1}. ${r[0]}</p>${r[1].map((o,j)=>`<label class="opt"><input type="radio" name="q3-${i}" value="${j}"> ${"ABCD"[j]}. ${o}</label>`).join("")}<div class="fb"></div></div>`).join("");
+
+$("p4").innerHTML=P4.map((r,i)=>`<div class="q" id="r4-${i}"><p>${i+1}. ${r[0]}</p>
+<label>→ ${r[1]} <input type="text" class="wide" id="a4-${i}" autocomplete="off" spellcheck="false"></label><div class="fb"></div></div>`).join("");
+
+let done=false,left=1800,tick;
+function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+tick=setInterval(()=>{left--;$("timer").textContent=fmt(Math.max(left,0));if(left<=0)finish(true)},1000);
+
+function mark(el,ok,msg){el.classList.add(ok?"ok":"bad");const f=el.querySelector(".fb");if(f)f.innerHTML=ok?"":msg}
+
+function finish(auto){
+  if(done)return;
+  if(!auto&&!confirm("Bạn chắc chắn muốn nộp bài?"))return;
+  done=true;clearInterval(tick);
+  let c1=0,c2=0,c3=0,c4=0;
+  P1.forEach((r,i)=>{const v=$("a1-"+i).value,ok=v===r[1];c1+=ok;mark($("r1-"+i),ok,`Đáp án: <b>${M.find(m=>m[0]===r[1])}</b>`)});
+  P2.forEach((r,i)=>{const ok=norm($("a2-"+i).value)===r[1];c2+=ok;mark($("r2-"+i),ok,`Đáp án: <b>${r[1]}</b>`)});
+  P3.forEach((r,i)=>{const s=document.querySelector(`input[name="q3-${i}"]:checked`),ok=s&&+s.value===r[2];c3+=!!ok;mark($("r3-"+i),!!ok,`Đáp án: <b>${"ABCD"[r[2]]}. ${r[1][r[2]]}</b>`)});
+  P4.forEach((r,i)=>{const ok=r[3].test(norm($("a4-"+i).value));c4+=ok;mark($("r4-"+i),ok,`Đáp án gợi ý: <b>${r[1]}</b>`)});
+  document.querySelectorAll("input,select").forEach(e=>e.disabled=true);
+  $("submit").disabled=true;
+  const p=[c1*0.3,c2*0.4,c3*0.3,c4*0.4],tot=p.reduce((a,b)=>a+b,0);
+  const r=$("result");r.style.display="block";
+  r.innerHTML=`<h2>Kết quả${$("name").value?" – "+$("name").value.replace(/</g,"&lt;"):""}</h2>
+<p><b>Tổng: ${tot.toFixed(1)} / 12</b></p>
+<p>Part 1: ${c1}/10 (${p[0].toFixed(1)}/3) · Part 2: ${c2}/10 (${p[1].toFixed(1)}/4) · Part 3: ${c3}/10 (${p[2].toFixed(1)}/3) · Part 4: ${c4}/5 (${p[3].toFixed(1)}/2)</p>
+<p class="sub">Kéo lên để xem đáp án đúng ở các câu sai. Câu viết lại có thể có đáp án đúng khác, hãy nhờ giáo viên kiểm tra.</p>`;
+  r.scrollIntoView({behavior:"smooth"});
+}
+$("submit").addEventListener("click",()=>finish(false));
+</script>
+</body>
+</html>
